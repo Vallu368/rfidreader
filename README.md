@@ -13,7 +13,7 @@ When the sensor scans an RFID Tag or Card, it reads its UID, and checks if it is
 This tool was made to make managing the database easier, and without needing to access the phpmyadmin site.
 
 This tool can: 
-- Show all tags/cards in the database, their ID, and associated name if they have one<>
+- Show all tags/cards in the database, their ID, and associated name if they have one
 
 - Add a new name to an existing tag in the database
 
