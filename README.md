@@ -3,11 +3,12 @@ This repository contains code for an RIFD Reader using Arduino, the Arduino sket
 
 # RFID Reader
 Requires an Arduino with an RC522 RFID Sensor and 2 buttons.
-Onc running, the program checks which button (In or Out) button has been pressed.
+Once running, the program checks which button (In or Out) button has been pressed.
 When the sensor scans an RFID Tag or Card, it checks if it is in the database, and if the tag/card has a name associated with it,  and either logs the person scanning in or out, or sends an error to the error log in the database.
 
 # RFID Manager
-Using this tool, you can manage the database without opening the actual mySQL page.
+This tool was made to make managing the database easier, and without needing to access the phpmyadmin site.
+
 This tool can: 
 - Show all tags/cards in the database, their ID, and associated name if they have one
 
