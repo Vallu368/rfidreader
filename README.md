@@ -67,13 +67,13 @@ nicknames - latka_id(int), nick(varchar)<br>
 rfid_data - id(int), date(varchar), uid(varchar), in_out(int)<br>
 <br>
 Action log documents any action taken using the RFID Manager with the current time of action and what action was done
-<br>
+<br> <br>
 Error log logs anything causing an error, such as failure to login (tag/card not in database, logging in when already in, etc). The error shows the UID of the tag/card responsible for the error, when the error happened, and what type of an error it was.
-<br>
+<br> <br>
 latka (lätkä is finnish for tag) holds all the tags or cards in the database, and their UID.
-<br>
+<br> <br>
 nicknames is for all the tags/cards currently in use. It holds the id from latka table, and the name of the current user of that tag/card.
-<br>
+<br> <br>
 rfid_data holds all the successful scans of the RFID Module.
 
 # Usage
