@@ -19,7 +19,7 @@ try:
     print("Connected to database")
     cursor = dbConn.cursor() #Open cursor to database
     dbConn.autocommit(True) #Commits inserts automatically
-    print("RFID Scanner Manager v0.1")
+    print("RFID Scanner Manager v0.2")
     action =f"{login_information[0]} logged into RFID Manager"
     formatted_date = getTime()
     cursor.execute("INSERT INTO action_log(date, action) VALUES (%s,%s)", (formatted_date, action))
@@ -37,6 +37,7 @@ try:
             print("add - Add a new nickname to an existing tag")
             print("remove - Remove an existing nickname")
             print("new - Add a new tag or card into the database (Requires RFID Scanner)")
+            print("data - Show rfid_data table")
             print("error - Show RFID Scanner error logs")
             print("action - Show RFID Manager action logs")
             print("reset - Log out everyone currently logged in on the database")
@@ -93,6 +94,28 @@ try:
             except Exception as e: 
                 print(f"Failed connection to {device}: ", e) 
                 continue
+        elif com.lower() == "data": #show rfid_data
+            print("Showing database rfid_data table")   
+            print("How many rows? Leave blank for all")
+            many = input("")
+            if many == "":
+                cursor.execute("SELECT * from rfid_data ORDER BY id ASC")
+                errors = cursor.fetchall()
+                for i in errors:
+                    print(i)
+            elif many.isdigit is False:
+                print("Invalid user input")
+                continue
+            else:
+                many = int(many)
+                cursor.execute("SELECT * from rfid_data ORDER BY id DESC limit %s", (many,))
+                errors = cursor.fetchall()
+                for i in errors:
+                    print(i)
+            formatted_date = getTime()
+            action = f"{login_information[0]} opened rfid_data log"
+            cursor.execute("INSERT INTO action_log(date, action) VALUES (%s,%s)", (formatted_date, action))
+
         elif com.lower() == "reset": #Log everyone out in case theres issues with rfid scanner
             print("This is for logging out everyone who is currently in, in case there is an error")
             print("continue? yes/no")

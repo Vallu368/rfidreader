@@ -4,7 +4,7 @@ This repository contains code for an RIFD Reader using Arduino, the Arduino sket
 # RFID Reader
 The Purpose of the reader is to keep track of traffic  in the classroom.<br>
 Requires an Arduino with an RC522 RFID Sensor and 2 buttons.<br>
-Once running, the program checks which button (In or Out) button has been pressed.<br>
+Once running, the program checks which button (In or Out) has been pressed.<br>
 If you can see the console, there will be text once you scan a tag, something like "0/1/2UID: XXXXXX"
 the number in front of "UID" is for keeping track of what button was pressed, as in if the person is going in or out (1 means in, 2 out, 0 no button pressed)<br>
 When the sensor scans an RFID Tag or Card, it reads its UID, and checks if it is in the database. If UID isn't in the database, it sends out an error.
@@ -25,7 +25,7 @@ This tool can:
 
 - Read the error log
 
-- Read the action log (Everything action done from the RFID Manager)
+- Read the action log (Every action done from the RFID Manager)
 
 - Log out everyone currently logged in through the scanner for debugging purposes
 
@@ -34,7 +34,7 @@ This tool does not require an Arduino with an RC522 RFID Sensor for anything oth
 
 To use the tool, launch it from command prompt with the command "python rfidmanager.py", or use the executable.
 
-# Arduino & Arduino Sketch
+# Arduino
 
 This project was made using an Arduino Mega 2560 Rev3 / JOY-iT MEGA 2560 and the following parts:<br>
 1x RGB LED light<br>
@@ -55,6 +55,7 @@ RGB LED Blue - Arduino 11<br>
 <br>
 In Button - Arduino 18<br>
 Out button - Arduino 3<br>
+
 
 # SQL Database
 This project uses an SQL Database setup in the following way:<br>
@@ -92,4 +93,12 @@ Manager:<br>
 
 Launch the rfidmanager.py script either by using the console (python rfidmanager.py) or by using the executable included<br>
 
+# RFID Lukija
 
+Lukijan tarkoituksena on tehdä kulunseurantaa luokassa tai muualla, ja se tarvitsee Arduinon, RFID-RC522 sensorin, kaksi nappia ja RGB LED valon. <br>
+Lukija lukee liuskan tai kortin UID:n, ja katsoo onko UID jo tietokannassa. Jos UID ei ole jo tietokannassa, ohjelma antaa virhevalon.
+Kun lukija on käynnissä, se lukee skannattuja RFID liuskoja tai kortteja, ja katsoo kumpaa nappia on painettu ennen skannausta. <br> Jos näet terminaalin jossa ohjelma pyörii, siihen tulee tekstiä esim."0/1/2UID: XXXXXX". Numero "UID":n edessä ilmaisee kumpaa nappia on painettu, 1 tarkoittaa sisääntulonappia, 2, poistumisnappia, ja 0 tarkoittaa että mitään nappia ei ole painettu.
+
+# RFID Manager (Suomeksi)
+
+TBA
