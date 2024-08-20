@@ -1,9 +1,11 @@
 import serial
 import MySQLdb
 import maskpass
+import hashlib
 from datetime import datetime
 
 #simple program to access the sql database for the rfid so creating nicknames and such is easier
+h = hashlib.new('sha256')
 def login():
     user = input("Database User: ")
     password = maskpass.askpass(mask="#")
@@ -19,7 +21,7 @@ try:
     print("Connected to database")
     cursor = dbConn.cursor() #Open cursor to database
     dbConn.autocommit(True) #Commits inserts automatically
-    print("RFID Scanner Manager v0.2")
+    print("RFID Scanner Manager v0.1")
     action =f"{login_information[0]} logged into RFID Manager"
     formatted_date = getTime()
     cursor.execute("INSERT INTO action_log(date, action) VALUES (%s,%s)", (formatted_date, action))
@@ -37,7 +39,6 @@ try:
             print("add - Add a new nickname to an existing tag")
             print("remove - Remove an existing nickname")
             print("new - Add a new tag or card into the database (Requires RFID Scanner)")
-            print("data - Show rfid_data table")
             print("error - Show RFID Scanner error logs")
             print("action - Show RFID Manager action logs")
             print("reset - Log out everyone currently logged in on the database")
@@ -62,9 +63,10 @@ try:
                     if str(uid_check) == "UID":
                         uid = str(data[6:])
                         uid = uid.strip()
-                        cursor.execute("select id from latka where rfid_uid = %s", (uid,))
+                        h.update(str(uid).encode('utf-8'))
+                        cursor.execute("select id from latka where rfid_uid = %s", (h.hexdigest(),))
                         check_if_exists = cursor.fetchone()
-                        #print(check_if_exists)
+                        #print(check_if_exists)ar
                         if check_if_exists is not None:
                             print(f"Tag already exists with ID number of {check_if_exists[0]}")
                             break
@@ -72,8 +74,8 @@ try:
                             cursor.execute("select max(id) from latka")
                             max = cursor.fetchone()[0]
                             max = int(max) + 1
-                            cursor.execute("INSERT INTO latka(id, rfid_uid) VALUES (%s,%s)", (max, uid))
-                            print(f"Tag added to database ID: {max} UID: {uid}")
+                            cursor.execute("INSERT INTO latka(id, rfid_uid) VALUES (%s,%s)", (max, h.hexdigest()))
+                            print(f"Tag added to database ID: {max} UID: {h.hexdigest()}")
                             formatted_date = getTime()
                             action = f"{login_information[0]} added new latka {max}"
                             cursor.execute("INSERT INTO action_log(date, action) VALUES (%s,%s)", (formatted_date, action))
@@ -94,28 +96,6 @@ try:
             except Exception as e: 
                 print(f"Failed connection to {device}: ", e) 
                 continue
-        elif com.lower() == "data": #show rfid_data
-            print("Showing database rfid_data table")   
-            print("How many rows? Leave blank for all")
-            many = input("")
-            if many == "":
-                cursor.execute("SELECT * from rfid_data ORDER BY id ASC")
-                errors = cursor.fetchall()
-                for i in errors:
-                    print(i)
-            elif many.isdigit is False:
-                print("Invalid user input")
-                continue
-            else:
-                many = int(many)
-                cursor.execute("SELECT * from rfid_data ORDER BY id DESC limit %s", (many,))
-                errors = cursor.fetchall()
-                for i in errors:
-                    print(i)
-            formatted_date = getTime()
-            action = f"{login_information[0]} opened rfid_data log"
-            cursor.execute("INSERT INTO action_log(date, action) VALUES (%s,%s)", (formatted_date, action))
-
         elif com.lower() == "reset": #Log everyone out in case theres issues with rfid scanner
             print("This is for logging out everyone who is currently in, in case there is an error")
             print("continue? yes/no")
