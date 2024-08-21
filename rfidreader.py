@@ -3,7 +3,7 @@ import MySQLdb
 import hashlib
 from datetime import datetime
 
-h = hashlib.new('sha256')
+
 def send_buzz_error(): #Red light twice & beeps from Arduino
     arduino.write(b"BUZZ_ERROR\n")
 
@@ -21,7 +21,7 @@ def check_in_or_out(uid: str, in_or_out: int):
    formatted_date = now.strftime('%Y-%m-%d %H:%M')
    try:
       #Establish sql connection
-      dbConn = MySQLdb.connect("localhost","root","","rfid", unix_socket = "/opt/lampp/var/mysql/mysql.sock")
+      dbConn = MySQLdb.connect("localhost","arduino","f212","rfid", unix_socket = "/opt/lampp/var/mysql/mysql.sock")
    except Exception as e:
       print("Failed to connect to database: ", e)
       send_buzz_error()
@@ -95,7 +95,7 @@ def check_in_or_out(uid: str, in_or_out: int):
    cursor.close()
       
 
-device = "/dev/ttyACM0" #port the arduino is plugged into
+device = "/dev/ttyUSB0" #port the arduino is plugged into
 try:
   print(f"Connecting to...{device}")
   arduino = serial.Serial(device, 9600) #start connection to arduino
@@ -107,7 +107,11 @@ try:
      uid_check = data[1:4]    #checks if the 3 letters of data are UID
      if str(uid_check) == "UID":
         uid = str(data[6:]) #length and position of the UID in data
-        h.update(uid)
+        uid = uid.strip()
+        h = hashlib.new('sha256')
+        print(uid)
+        h.update(uid.encode('utf-8'))
+        print(h.hexdigest())
          #check_in_or_out(uid, arduino) #run function to put data into the database
         check_in_or_out(h.hexdigest(), int(in_out_check))
 

@@ -48,10 +48,10 @@ try:
             print("This function needs an RFID Reader running the right sketch")
             print("The sketch is included in github.com/Vallu368/rfidreader")
             print("Please connect an RFID reader")
-            print("Input the port the device is plugged into, leave blank for /dev/ttyACM0")
+            print("Input the port the device is plugged into, leave blank for /dev/ttyUSB0")
             device = input("")
             if device == "":
-                device = "/dev/ttyACM0"
+                device = "/dev/ttyUSB0"
             try:
                 print(f"Connecting to {device}...")
                 arduino = serial.Serial(device, 9600) #Start connection to arduino

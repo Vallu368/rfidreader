@@ -93,6 +93,8 @@ Manager:<br>
 
 Launch the rfidmanager.py script either by using the console (python rfidmanager.py) or by using the executable included<br>
 
+If adding new tags to the database, you need an Arduino running the RFID Reader sketch attached to the computer running the rfidmanager.py, otherwise it is not necessary.
+
 # RFID Lukija
 
 Lukijan tarkoituksena on tehdä kulunseurantaa luokassa tai muualla, ja se tarvitsee Arduinon, RFID-RC522 sensorin, kaksi nappia ja RGB LED valon. <br>
