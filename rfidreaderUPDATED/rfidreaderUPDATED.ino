@@ -61,31 +61,43 @@ void setup() {
 
 void loop() {
 
-  if (lcdCardCheck == 1) {
+  if (lcdCardCheck == 1) { //button
     lcd.setCursor(0, 0);
-    lcd.print("Paina      ");
+    lcd.print("Paina             ");
     lcd.setCursor(0, 1);
-    lcd.print("Nappia     ");
+    lcd.print("Nappia             ");
   }
-  else if (lcdCardCheck == 2) {
+  else if (lcdCardCheck == 2) { //welcome
     lcd.setCursor(0, 0);
     lcd.print("Tervetuloa!");
   }
-  else if (lcdCardCheck == 3) {
+  else if (lcdCardCheck == 3) { //Goodbye
     lcd.setCursor(0, 0);
     lcd.print("Heippa!    ");
   }
-  else if (lcdCardCheck == 0) {
+  else if (lcdCardCheck == 0) { //Read Card
     lcd.setCursor(0,0);
-    lcd.print("Lue  ");
+    lcd.print("Lue           ");
     lcd.setCursor(0,1);
-    lcd.print("Kortti     ");
+    lcd.print("Kortti           ");
   }
-  else if (lcdCardCheck == 4) {
+  else if (lcdCardCheck == 4) { //Not in database
     lcd.setCursor(0,0);
     lcd.print("Ei  ");
     lcd.setCursor(0,1);
     lcd.print("Tietokannassa!     ");
+  }
+  else if (lcdCardCheck == 5) { // already in
+    lcd.setCursor(0,0);
+    lcd.print("Olet jo  ");
+    lcd.setCursor(0,1);
+    lcd.print("paikalla!     ");
+  }
+  else if (lcdCardCheck == 6) { //already out
+    lcd.setCursor(0,0);
+    lcd.print("Olet jo  ");
+    lcd.setCursor(0,1);
+    lcd.print("ulkona!     ");
   }
 
   
@@ -111,6 +123,12 @@ void loop() {
     }
     if (command == "DATABASE") {
       LCDScreen(4);
+    }
+    if (command == "WELCOME") {
+      LCDScreen(2);
+    }
+    if (command == "GOODBYE") {
+      LCDScreen(3);
     }
   }
 }

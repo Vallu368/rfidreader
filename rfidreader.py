@@ -29,6 +29,8 @@ def WaitForButton(uid, arduino):
    uid = uid.strip()
    cursor.execute("SELECT id FROM latka WHERE rfid_uid = %s", (uid,))
    result = cursor.fetchone()
+
+   
         
    if result is None:
       print(f"UID {uid} not in database.")
@@ -36,9 +38,23 @@ def WaitForButton(uid, arduino):
       errorType = "UID not in Database"
       arduino.write(b"DATABASE\n")
       cursor.execute("INSERT INTO error_log (date,tag_uid,error_type) VALUES (%s,%s,%s)", (formatted_date,uid,errorType))
+      time.sleep(3)
+      arduino.write(b"KORTTI\n")
       return
    else:
+      tag_id = result[0]
+      cursor.execute("SELECT nick FROM nicknames WHERE latka_id = %s", (tag_id,))
+      nickresult = cursor.fetchone()
 
+      if nickresult is None:
+         print("No nickname in database")
+         send_buzz_error()
+         errorType = f"No assigned nickname in database"
+         cursor.execute("INSERT INTO error_log (date,tag_uid,error_type) VALUES (%s,%s,%s)", (formatted_date,uid,errorType))
+         #nickresult = uid #make nickname the uid
+         return
+
+      print(f"Hello {nickresult[0]}")
       arduino.write(b"NAPPI\n")
       print("Waiting for button")
       start = time.time()
@@ -56,7 +72,6 @@ def WaitForButton(uid, arduino):
 
 
 def check_in_or_out(uid: str, in_or_out: int):
-   print("Checking...")
    going_in = 1
    going_out = 0
    now = datetime.now()
@@ -75,11 +90,6 @@ def check_in_or_out(uid: str, in_or_out: int):
    result = cursor.fetchone()
         
    if result is None:
-      print(f"UID {uid} not in database.")
-      send_buzz_error()
-      errorType = "UID not in Database"
-      arduino.write(b"DATABASE\n")
-      cursor.execute("INSERT INTO error_log (date,tag_uid,error_type) VALUES (%s,%s,%s)", (formatted_date,uid,errorType))
       return
         
    tag_id = result[0]
@@ -88,11 +98,6 @@ def check_in_or_out(uid: str, in_or_out: int):
    nickresult = cursor.fetchone()
 
    if nickresult is None:
-      print("No nickname in database")
-      send_buzz_error()
-      errorType = f"No assigned nickname in database"
-      cursor.execute("INSERT INTO error_log (date,tag_uid,error_type) VALUES (%s,%s,%s)", (formatted_date,uid,errorType))
-      #nickresult = uid #make nickname the uid
       return
 
    print(f"Hello {nickresult[0]}")
