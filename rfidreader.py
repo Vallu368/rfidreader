@@ -40,7 +40,7 @@ def WaitForButton(uid, arduino):
       cursor.execute("INSERT INTO error_log (date,tag_uid,error_type) VALUES (%s,%s,%s)", (formatted_date,uid,errorType))
       time.sleep(3)
       arduino.write(b"KORTTI\n")
-      return
+      return 2
    else:
       tag_id = result[0]
       cursor.execute("SELECT nick FROM nicknames WHERE latka_id = %s", (tag_id,))
@@ -52,7 +52,7 @@ def WaitForButton(uid, arduino):
          errorType = f"No assigned nickname in database"
          cursor.execute("INSERT INTO error_log (date,tag_uid,error_type) VALUES (%s,%s,%s)", (formatted_date,uid,errorType))
          #nickresult = uid #make nickname the uid
-         return
+         return 2
 
       print(f"Hello {nickresult[0]}")
       arduino.write(b"NAPPI\n")
@@ -111,12 +111,18 @@ def check_in_or_out(uid: str, in_or_out: int):
             errorType = "Duplicate enter"
             cursor.execute("INSERT INTO error_log (date,tag_uid,error_type) VALUES (%s,%s,%s)", (formatted_date,uid,errorType))
             send_buzz_error()
+            arduino.write(b"DUPE\n")
+            time.sleep(3)
+            arduino.write(b"KORTTI\n")
             return
 
 
       cursor.execute("INSERT INTO rfid_data (date, uid,in_out) VALUES (%s,%s,%s)", (formatted_date,uid,going_in))
       print(f"{nickresult[0]} has gone in at {formatted_date}")
       send_buzz_green()
+      arduino.write(b"WELCOME\n")
+      time.sleep(3)
+      arduino.write(b"KORTTI\n")
 
    elif in_or_out == 0: #GOING OUT
     send_buzz_blue()
@@ -128,6 +134,9 @@ def check_in_or_out(uid: str, in_or_out: int):
           errorType = "Duplicate exit"
           cursor.execute("INSERT INTO error_log (date,tag_uid,error_type) VALUES (%s,%s,%s)", (formatted_date,uid,errorType))
           send_buzz_error()
+          arduino.write(b"DUPEX\n")
+          time.sleep(3)
+          arduino.write(b"KORTTI\n")
           return
           
     #insert data into database
@@ -141,7 +150,10 @@ def check_in_or_out(uid: str, in_or_out: int):
 
    amount = cursor.execute("SELECT uid FROM rfid_data t1 WHERE in_out = 1 AND (SELECT MAX(t2.id) FROM rfid_data t2 WHERE t2.uid = t1.uid) = t1.id;")
    print(f"currently {amount} in class")
-   send_buzz_green()
+   send_buzz_blue()
+   arduino.write(b"GOODBYE\n")
+   time.sleep(3)
+   arduino.write(b"KORTTI\n")
    cursor.close()
       
 
@@ -166,7 +178,8 @@ try:
          #check_in_or_out(uid, arduino) #run function to put data into the database
         #check_in_or_out(h.hexdigest(), int(in_out_check))
         button = WaitForButton(h.hexdigest(), arduino)
-        check_in_or_out(h.hexdigest(), button)
+        if button != "2":
+           check_in_or_out(h.hexdigest(), button)
         button = "2"
 
         

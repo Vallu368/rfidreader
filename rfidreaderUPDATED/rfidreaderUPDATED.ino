@@ -70,10 +70,14 @@ void loop() {
   else if (lcdCardCheck == 2) { //welcome
     lcd.setCursor(0, 0);
     lcd.print("Tervetuloa!");
+    lcd.setCursor(0,1);
+    lcd.print("                  ");
   }
   else if (lcdCardCheck == 3) { //Goodbye
     lcd.setCursor(0, 0);
     lcd.print("Heippa!    ");
+    lcd.setCursor(0,1);
+    lcd.print("                  ");
   }
   else if (lcdCardCheck == 0) { //Read Card
     lcd.setCursor(0,0);
@@ -129,6 +133,12 @@ void loop() {
     }
     if (command == "GOODBYE") {
       LCDScreen(3);
+    }
+    if (command == "DUPE") {
+      LCDScreen(5);
+    }
+    if (command == "DUPEX") {
+      LCDScreen(6);
     }
   }
 }
