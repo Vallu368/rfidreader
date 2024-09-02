@@ -15,6 +15,7 @@
 #define GREEN_BUTTON_PIN 2
 #define RED_BUTTON_PIN 3
 
+#define LCD_BACKLIGHT_PIN 7 //Control backlight for powersaving
 int Contrast=110; //Contrast set through arduino
 
 LiquidCrystal lcd(12, 11, 25, 24, 23, 22); //pins for LCD data
@@ -33,6 +34,7 @@ void setup() {
   pinMode(RED_LED_PIN, OUTPUT);
   pinMode(GREEN_LED_PIN, OUTPUT);
   pinMode(BLUE_LED_PIN, OUTPUT);
+  pinMode(LCD_BACKLIGHT_PIN, OUTPUT);
   pinMode(GREEN_BUTTON_PIN, INPUT_PULLUP);
   pinMode(RED_BUTTON_PIN, INPUT_PULLUP);
   Serial.begin(9600); // Starts the serial connection at 9600 baud rate.
@@ -40,12 +42,12 @@ void setup() {
   mfrc522.PCD_Init(); // Initiates MFRC522 RFID module.
   mfrc522.PCD_DumpVersionToSerial(); // Show details of RFID Reader, if version errors it isn't set up properly
   Serial.println("Please scan your RFID tag or card.");
-
+  digitalWrite(7, HIGH); //Backlight on
   analogWrite(6,Contrast);
   lcd.begin(16, 2);
   lcd.setCursor(0,0);
   lcd.print("Lue kortti ");
-
+  
 
   // Attach interrupts to the buttons
   attachInterrupt(digitalPinToInterrupt(GREEN_BUTTON_PIN), greenButtonINT, FALLING);
@@ -173,7 +175,6 @@ bool getID() {
     readCard[i] = mfrc522.uid.uidByte[i]; // Reads RFID card's UID
     UID += String(readCard[i], HEX); // Save UID as string for database
   }
-
   Serial.println(UID);
   mfrc522.PICC_HaltA(); // Halt the PICC
 

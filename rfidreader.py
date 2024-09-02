@@ -3,7 +3,6 @@ import MySQLdb
 import hashlib
 from datetime import datetime
 import time
-import tqdm
 
 
 def send_buzz_error(): #Red light twice & beeps from Arduino
