@@ -52,6 +52,9 @@ def WaitForButton(uid, arduino):
          errorType = f"No assigned nickname in database"
          cursor.execute("INSERT INTO error_log (date,tag_uid,error_type) VALUES (%s,%s,%s)", (formatted_date,uid,errorType))
          #nickresult = uid #make nickname the uid
+         arduino.write(b"DATABASE\n")
+         time.sleep(3)
+         arduino.write(b"KORTTI\n")
          return 2
 
       print(f"Hello {nickresult[0]}")
@@ -67,6 +70,8 @@ def WaitForButton(uid, arduino):
          # Check if timeout has occurred
          if time.time() >= endTime:
                print("Timeout")
+               send_buzz_error()
+               arduino.write(b"KORTTI\n")
                return 2
          
          # Check if there is data waiting to be read
@@ -74,7 +79,7 @@ def WaitForButton(uid, arduino):
                data = arduino.readline().decode('utf-8').strip()
                print(data)
                if len(data) == 0:
-                  continue  # Skip iteration if data is empty
+                  continue  # Skip if data is empty
 
                in_out_check = data[0]
                if in_out_check == "0":
@@ -88,6 +93,7 @@ def WaitForButton(uid, arduino):
 
 
 def check_in_or_out(uid: str, in_or_out: int):
+ 
    going_in = 1
    going_out = 0
    now = datetime.now()
@@ -167,13 +173,17 @@ def check_in_or_out(uid: str, in_or_out: int):
       time.sleep(3)
       arduino.write(b"KORTTI\n")
 
+   if in_or_out == 0:
+      send_buzz_blue()
+      arduino.write(b"GOODBYE\n")
+      time.sleep(3)
+      arduino.write(b"KORTTI\n")
+      
+
    amount = cursor.execute("SELECT uid FROM rfid_data t1 WHERE in_out = 1 AND (SELECT MAX(t2.id) FROM rfid_data t2 WHERE t2.uid = t1.uid) = t1.id;")
    print(f"currently {amount} in class")
-   send_buzz_blue()
-   arduino.write(b"GOODBYE\n")
-   time.sleep(3)
-   arduino.write(b"KORTTI\n")
    cursor.close()
+   
       
 
 device = "/dev/ttyACM0" #port the arduino is plugged into
@@ -197,9 +207,9 @@ try:
          #check_in_or_out(uid, arduino) #run function to put data into the database
         #check_in_or_out(h.hexdigest(), int(in_out_check))
         button = WaitForButton(h.hexdigest(), arduino)
-        if button != "2":
+        if button != 2:
            check_in_or_out(h.hexdigest(), button)
-        button = "2"
+        button = 2
 
         
 
