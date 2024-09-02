@@ -3,6 +3,7 @@ import MySQLdb
 import hashlib
 from datetime import datetime
 import time
+import tqdm
 
 
 def send_buzz_error(): #Red light twice & beeps from Arduino
@@ -15,6 +16,7 @@ def send_buzz_blue():
    arduino.write(b"BUZZ_BLUE\n")
 
 def WaitForButton(uid, arduino):
+      
    now = datetime.now()
    formatted_date = now.strftime('%Y-%m-%d %H:%M')
    try:
@@ -30,8 +32,6 @@ def WaitForButton(uid, arduino):
    cursor.execute("SELECT id FROM latka WHERE rfid_uid = %s", (uid,))
    result = cursor.fetchone()
 
-   
-        
    if result is None:
       print(f"UID {uid} not in database.")
       send_buzz_error()
@@ -57,17 +57,33 @@ def WaitForButton(uid, arduino):
       print(f"Hello {nickresult[0]}")
       arduino.write(b"NAPPI\n")
       print("Waiting for button")
-      start = time.time()
-      end = start + 10
-      while True:
-         data = arduino.readline().decode('utf-8') #decodes data to be more useful
-         print(data)
-         in_out_check = data[0:1]
-         if in_out_check == "0":
-            return 0
-         if in_out_check == "1":
-            return 1
       
+
+      startTime = time.time()
+      timeToRun = 5  # Timeout duration in seconds
+      endTime = startTime + timeToRun
+
+      while True:
+         # Check if timeout has occurred
+         if time.time() >= endTime:
+               print("Timeout")
+               return 2
+         
+         # Check if there is data waiting to be read
+         if arduino.in_waiting > 0:
+               data = arduino.readline().decode('utf-8').strip()
+               print(data)
+               if len(data) == 0:
+                  continue  # Skip iteration if data is empty
+
+               in_out_check = data[0]
+               if in_out_check == "0":
+                  return 0
+               elif in_out_check == "1":
+                  return 1
+         else:
+               time.sleep(0.1)
+         
 
 
 
@@ -88,9 +104,9 @@ def check_in_or_out(uid: str, in_or_out: int):
    uid = uid.strip()
    cursor.execute("SELECT id FROM latka WHERE rfid_uid = %s", (uid,))
    result = cursor.fetchone()
-        
    if result is None:
       return
+   
         
    tag_id = result[0]
    #print(f"TAG NUMBER IS {tag_id}")
@@ -147,6 +163,9 @@ def check_in_or_out(uid: str, in_or_out: int):
       errorType = "No button pressed"
       cursor.execute("INSERT INTO error_log (date,tag_uid,error_type) VALUES (%s,%s,%s)", (formatted_date,uid,errorType))
       send_buzz_error()
+      arduino.write(b"TIMEOUT\n")
+      time.sleep(3)
+      arduino.write(b"KORTTI\n")
 
    amount = cursor.execute("SELECT uid FROM rfid_data t1 WHERE in_out = 1 AND (SELECT MAX(t2.id) FROM rfid_data t2 WHERE t2.uid = t1.uid) = t1.id;")
    print(f"currently {amount} in class")

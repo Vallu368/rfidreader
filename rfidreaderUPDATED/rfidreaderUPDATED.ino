@@ -44,9 +44,7 @@ void setup() {
   analogWrite(6,Contrast);
   lcd.begin(16, 2);
   lcd.setCursor(0,0);
-  lcd.print("Lue  ");
-  lcd.setCursor(0,1);
-  lcd.print("Kortti     ");
+  lcd.print("Lue kortti ");
 
 
   // Attach interrupts to the buttons
@@ -63,45 +61,46 @@ void loop() {
 
   if (lcdCardCheck == 1) { //button
     lcd.setCursor(0, 0);
-    lcd.print("Paina             ");
-    lcd.setCursor(0, 1);
-    lcd.print("Nappia             ");
+    lcd.clear();
+    lcd.print("Paina nappia  ");
   }
   else if (lcdCardCheck == 2) { //welcome
     lcd.setCursor(0, 0);
+    lcd.clear();
     lcd.print("Tervetuloa!");
-    lcd.setCursor(0,1);
-    lcd.print("                  ");
   }
   else if (lcdCardCheck == 3) { //Goodbye
     lcd.setCursor(0, 0);
-    lcd.print("Heippa!    ");
-    lcd.setCursor(0,1);
-    lcd.print("                  ");
+    lcd.clear();
+    lcd.print("Heippa!");
   }
   else if (lcdCardCheck == 0) { //Read Card
     lcd.setCursor(0,0);
-    lcd.print("Lue           ");
-    lcd.setCursor(0,1);
-    lcd.print("Kortti           ");
+    lcd.clear();
+    lcd.print("Lue kortti");
   }
   else if (lcdCardCheck == 4) { //Not in database
     lcd.setCursor(0,0);
-    lcd.print("Ei  ");
-    lcd.setCursor(0,1);
-    lcd.print("Tietokannassa!     ");
+    lcd.clear();
+    lcd.print("Ei tietokannassa!");
+ 
   }
   else if (lcdCardCheck == 5) { // already in
     lcd.setCursor(0,0);
-    lcd.print("Olet jo  ");
-    lcd.setCursor(0,1);
-    lcd.print("paikalla!     ");
+    lcd.clear();
+    lcd.print("Olet jo paikalla!");
+
   }
   else if (lcdCardCheck == 6) { //already out
     lcd.setCursor(0,0);
-    lcd.print("Olet jo  ");
-    lcd.setCursor(0,1);
-    lcd.print("ulkona!     ");
+    lcd.clear();
+    lcd.print("Olet jo ulkona! ");
+
+  }
+  else if (lcdCardCheck == 6) { //already out
+    lcd.setCursor(0,0);
+    lcd.clear();
+    lcd.print("Et painanut nappia!  ");
   }
 
   
@@ -139,6 +138,9 @@ void loop() {
     }
     if (command == "DUPEX") {
       LCDScreen(6);
+    }
+    if (command == "TIMEOUT") {
+      LCDScreen(7);
     }
   }
 }
