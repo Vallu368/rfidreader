@@ -21,6 +21,7 @@ int Contrast=110; //Contrast set through arduino
 LiquidCrystal lcd(12, 11, 25, 24, 23, 22); //pins for LCD data
 
 int lcdCardCheck = 10;
+unsigned long lastScanTime = 0;
 
 byte readCard[4];     // Array that will hold UID of the RFID card.
 bool successRead;
@@ -60,6 +61,11 @@ void setup() {
 }
 
 void loop() {
+  unsigned long currentTime = millis();
+  // Check if 2 minutes  have passed since the last scan
+  if (currentTime - lastScanTime >= 12000) {
+    digitalWrite(LCD_BACKLIGHT_PIN, LOW); // Turn off the LCD backlight
+  }
 
   if (lcdCardCheck == 1) { //button
     lcd.setCursor(0, 0);
@@ -158,6 +164,7 @@ bool getID() {
   if (!mfrc522.PICC_ReadCardSerial()) {
     return false;
   }
+  lastScanTime = millis(); // Update the last scan time
 
   if (lastButtonPressed == 1) { //MADE REDUNDANT should be cleaned away
     Serial.print("1UID: ");
@@ -223,8 +230,8 @@ void redButtonINT() {
   if (lastButtonPressed != 0) {
     lastButtonPressed = 0; // Red button was pressed
     Serial.println("0");
-    BuzzBlue();
   }
+  BuzzBlue();
 }
 
 void greenButtonINT() {
@@ -232,8 +239,8 @@ void greenButtonINT() {
   if (lastButtonPressed != 1) {
     lastButtonPressed = 1; // Red button was pressed
     Serial.println("1");
-    BuzzGreen();
   }
+  BuzzGreen();
 }
 
 void LCDScreen(int i) {
