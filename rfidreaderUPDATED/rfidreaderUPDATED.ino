@@ -42,7 +42,7 @@ void setup() {
   mfrc522.PCD_Init(); // Initiates MFRC522 RFID module.
   mfrc522.PCD_DumpVersionToSerial(); // Show details of RFID Reader, if version errors it isn't set up properly
   Serial.println("Please scan your RFID tag or card.");
-  digitalWrite(7, HIGH); //Backlight on
+  digitalWrite(7, LOW); //Backlight on
   analogWrite(6,Contrast);
   lcd.begin(16, 2);
   lcd.setCursor(0,0);
@@ -169,7 +169,7 @@ bool getID() {
     Serial.print("2UID: ");
     BuzzBlue();
   }
-
+  digitalWrite(7, HIGH);
   String UID = "";
   for (byte i = 0; i < mfrc522.uid.size; i++) {
     readCard[i] = mfrc522.uid.uidByte[i]; // Reads RFID card's UID
@@ -220,18 +220,20 @@ void BuzzError() {
 
 void redButtonINT() {
   //Serial.println("RED button pressed");
-  lastButtonPressed = 0; // Red button was pressed
-  Serial.println("0Red");
-
-  BuzzBlue();
+  if (lastButtonPressed != 0) {
+    lastButtonPressed = 0; // Red button was pressed
+    Serial.println("0");
+    BuzzBlue();
+  }
 }
 
 void greenButtonINT() {
   //Serial.println("GREEN button pressed");
-  lastButtonPressed = 1; // Green button was pressed
-  Serial.println("1Green");
-
-  BuzzGreen();
+  if (lastButtonPressed != 1) {
+    lastButtonPressed = 1; // Red button was pressed
+    Serial.println("1");
+    BuzzGreen();
+  }
 }
 
 void LCDScreen(int i) {

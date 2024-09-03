@@ -5,7 +5,6 @@ import hashlib
 from datetime import datetime
 
 #simple program to access the sql database for the rfid so creating nicknames and such is easier
-h = hashlib.new('sha256')
 def login():
     user = input("Database User: ")
     password = maskpass.askpass(mask="#")
@@ -63,6 +62,7 @@ try:
                     if str(uid_check) == "UID":
                         uid = str(data[6:])
                         uid = uid.strip()
+                        h = hashlib.new('sha256')
                         h.update(str(uid).encode('utf-8'))
                         cursor.execute("select id from latka where rfid_uid = %s", (h.hexdigest(),))
                         check_if_exists = cursor.fetchone()
