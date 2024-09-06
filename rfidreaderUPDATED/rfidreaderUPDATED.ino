@@ -65,6 +65,7 @@ void loop() {
   // Check if 2 minutes  have passed since the last scan
   if (currentTime - lastScanTime >= 12000) {
     digitalWrite(LCD_BACKLIGHT_PIN, LOW); // Turn off the LCD backlight
+    lcd.begin(16,2); //Reset LCD screen in case its got scrambled
   }
 
   if (lcdCardCheck == 1) { //button
