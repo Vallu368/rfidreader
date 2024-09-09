@@ -24,6 +24,8 @@ def WaitForButton(uid, arduino):
    except Exception as e:
       print("Failed to connect to database: ", e)
       send_buzz_error()
+      send_buzz_error()
+      send_buzz_error()
       exit()
    cursor = dbConn.cursor() #Open cursor to database
    dbConn.autocommit(True) #commits inserts automatically
