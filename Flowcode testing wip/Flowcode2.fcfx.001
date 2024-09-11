@@ -1,0 +1,429 @@
+<root>
+<document scada='0' schema='103' license='1,FREE_VERSION,DF7JCQ' title='' description='' fcversion='655618' target='ARD.ATMEGA.Arduino Mega 2560' >
+	<config data='' clkspd='16000000' simspd='0' usewdt='0' constif='0' commport='3' Use3V3='0' />
+	<plugins >
+		<dll_models enabled='1' />
+	</plugins>
+	<supplement use='0' head='' body='' />
+	<debug />
+	<traces />
+	<ghost >
+		<FK2 >
+			<data name='FK2D0' port='4294967295' pin='4294967295' />
+			<data name='FK2D1' port='4294967295' pin='4294967295' />
+			<data name='FK2D2' port='4294967295' pin='4294967295' />
+			<data name='FK2D3' port='4294967295' pin='4294967295' />
+			<data name='FK2D4' port='4294967295' pin='4294967295' />
+			<data name='FK2D5' port='4294967295' pin='4294967295' />
+			<data name='FK2D6' port='4294967295' pin='4294967295' />
+			<data name='FK2D7' port='4294967295' pin='4294967295' />
+			<data name='FK2D8' port='4294967295' pin='4294967295' />
+			<data name='FK2D9' port='4294967295' pin='4294967295' />
+			<data name='FK2D10' port='4294967295' pin='4294967295' />
+			<data name='FK2D11' port='4294967295' pin='4294967295' />
+			<data name='FK2D12' port='4294967295' pin='4294967295' />
+			<data name='FK2D13' port='4294967295' pin='4294967295' />
+			<data name='FK2D14' port='4294967295' pin='4294967295' />
+			<data name='FK2D15' port='4294967295' pin='4294967295' />
+			<data name='FK2A0' port='4294967295' pin='4294967295' />
+			<data name='FK2A1' port='4294967295' pin='4294967295' />
+			<data name='FK2A2' port='4294967295' pin='4294967295' />
+			<data name='FK2A3' port='4294967295' pin='4294967295' />
+			<data name='FK2A4' port='4294967295' pin='4294967295' />
+			<data name='FK2A5' port='4294967295' pin='4294967295' />
+		</FK2>
+		<ICD >
+			<data name='AnalogPrescaleValue' value='19' />
+			<data name='DigitalSampleRate' value='100000' />
+			<data name='BreakpointCount' value='8' />
+			<data name='CallStackDepthCount' value='8' />
+			<data name='ClockPort' value='7' />
+			<data name='ClockPin' value='6' />
+			<data name='DataPort' value='7' />
+			<data name='DataPin' value='5' />
+			<data name='UseDefaultPins' value='1' />
+			<data name='WrapEnabled' value='1' />
+			<data name='CommsDelayOverridden' value='0' />
+			<data name='CommsDelay' value='11' />
+			<data name='CalculatedCommsDelay' value='11' />
+			<data name='AnalogEB2PrescaleValue' value='2' />
+			<data name='DigitalEB2SampleRate' value='100000' />
+		</ICD>
+		<pins >
+			<digital A='0' B='0' C='0' D='0' E='0' F='0' G='0' H='0' I='0' J='0' K='0' L='0' M='0' N='0' O='0' P='0' Q='0' R='0' S='0' T='0' U='0' V='0' W='0' X='0' Y='0' Z='0' />
+			<analog A='0' B='0' C='0' D='0' E='0' F='0' G='0' H='0' I='0' J='0' K='0' L='0' M='0' N='0' O='0' P='0' Q='0' R='0' S='0' T='0' U='0' V='0' W='0' X='0' Y='0' Z='0' />
+		</pins>
+	</ghost>
+	<components >
+		<settings autoimg='0' center='1' unitscale='0' fixedscale='0' fixedx='25' fixedy='25' fixedz='25' headcode='0' />
+		<definition guid='1c27cf5a-51e5-43c7-bc80-25bad832418b' vstate='40' vmin='0' vmaj='1' srcleaf='' visiblename='' description='' category='' category2='' category3='' bIs2dOnly='0' bIs3dOnly='0' catenable='1' author='' manuname='' manucode='' sysinfo='0' keywords='' dynamic='1' scadaCompatible='0' embeddedCompatible='1' showmacros='1' iconpath='' />
+		<component class_type='root' codename='ComponentRoot' panelId='-1' x='0' y='0' z='0' xsz='1' ysz='1' zsz='1' xang='0' yang='0' zang='0' xquat='0' yquat='0' zquat='0' wquat='1' visible='1' scadavisible='1' interactive='1' solid='1' layer='0' poslock='0' comp2dType='0' >
+			<resources />
+			<properties />
+			<values />
+			<events />
+			<apis />
+			<variables >
+				<variable public='0' >
+					<def class_type='variable' name='test' type='T8' description='' isconst='0' isHidden='0' isinit='0' usrinit='&quot;&quot;' setinit='' >
+						<array size='20' />
+					</def>
+				</variable>
+				<variable public='0' >
+					<def class_type='variable' name='false' type='b1' description='' isconst='1' isHidden='0' isinit='1' usrinit='0' setinit='0' />
+				</variable>
+				<variable public='0' >
+					<def class_type='variable' name='retval' type='u8' description='' isconst='0' isHidden='0' isinit='0' usrinit='0' setinit='' />
+				</variable>
+				<variable public='0' >
+					<def class_type='variable' name='lastButtonPressed' type='s16' description='' isconst='0' isHidden='0' isinit='1' usrinit='2' setinit='2' />
+				</variable>
+				<variable public='0' >
+					<def class_type='variable' name='uid' type='u8' description='' isconst='0' isHidden='0' isinit='0' usrinit='0' setinit='' />
+				</variable>
+				<variable public='0' >
+					<def class_type='variable' name='true' type='b1' description='' isconst='1' isHidden='0' isinit='1' usrinit='1' setinit='1' />
+				</variable>
+			</variables>
+			<macros >
+				<macro >
+					<flowline name='getID' description='' statediag='0' >
+						<return name='Return' type='v0' description='' isconst='0' isHidden='0' isinit='0' usrinit='' setinit='' />
+						<command class_type='call' title='Component Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' component='RFID_MFRC522_V2' macro='IsNewCardPresent' />
+					</flowline>
+				</macro>
+				<macro >
+					<flowline name='BlinkGreen' description='' statediag='0' >
+						<return name='Return' type='v0' description='' isconst='0' isHidden='0' isinit='0' usrinit='' setinit='' />
+						<command class_type='call' title='Component Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' component='LEDGreen' macro='TurnOn' />
+						<command class_type='delay' title='Delay' cmdcolor='4206456' cmdcolor_sec='10785756' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' exp='500' type='1' />
+						<command class_type='call' title='Component Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' component='LEDGreen' macro='TurnOff' />
+					</flowline>
+				</macro>
+				<macro >
+					<flowline name='redButtonInt' description='' statediag='0' >
+						<return name='Return' type='v0' description='' isconst='0' isHidden='0' isinit='0' usrinit='' setinit='' />
+						<command class_type='call' title='User Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' macro='BlinkRed' />
+						<command class_type='calculation' title='Calculation' cmdcolor='4206456' cmdcolor_sec='10785756' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' >
+							<exp exp='lastButtonPressed = 0' />
+						</command>
+					</flowline>
+				</macro>
+				<macro >
+					<flowline name='BlinkRed' description='' statediag='0' >
+						<return name='Return' type='v0' description='' isconst='0' isHidden='0' isinit='0' usrinit='' setinit='' />
+						<command class_type='call' title='Component Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' component='LEDRed' macro='TurnOn' />
+						<command class_type='delay' title='Delay' cmdcolor='4206456' cmdcolor_sec='10785756' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' exp='500' type='1' />
+						<command class_type='call' title='Component Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' component='LEDRed' macro='TurnOff' />
+					</flowline>
+				</macro>
+				<macro >
+					<flowline name='greenButtonInt' description='' statediag='0' >
+						<return name='Return' type='v0' description='' isconst='0' isHidden='0' isinit='0' usrinit='' setinit='' />
+						<command class_type='call' title='User Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' macro='BlinkGreen' />
+						<command class_type='calculation' title='Calculation' cmdcolor='4206456' cmdcolor_sec='10785756' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' >
+							<exp exp='lastButtonPressed = 1' />
+						</command>
+					</flowline>
+				</macro>
+				<macro >
+					<flowline name='Main' description='' statediag='0' >
+						<return name='Return' type='v0' description='' isconst='0' isHidden='0' isinit='0' usrinit='' setinit='' />
+						<command class_type='call' title='Component Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' component='LEDGreen' macro='TurnOff' />
+						<command class_type='call' title='Component Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' component='LEDRed' macro='TurnOff' />
+						<command class_type='calculation' title='Calculation' cmdcolor='4206456' cmdcolor_sec='10785756' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' >
+							<exp exp='lastButtonPressed = 2' />
+						</command>
+						<command class_type='call' title='Component Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' component='RFID_MFRC522_V2' macro='Initialise' />
+						<command class_type='interrupt' title='Interrupt' cmdcolor='4206456' cmdcolor_sec='10785756' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' enable='1' name='IOC0' call='redButtonInt' >
+							<settings timer='0' prescale='-1' postscale='-1' rollover='-1' bitcount='-1' trigger='3' ppsport='-1' ppspin='-1' maskhi='ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' masklo='ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' >
+								<option value='-1' />
+								<option value='-1' />
+								<option value='-1' />
+								<option value='-1' />
+								<option value='-1' />
+								<option value='-1' />
+								<option value='-1' />
+								<option value='-1' />
+							</settings>
+						</command>
+						<command class_type='interrupt' title='Interrupt' cmdcolor='4206456' cmdcolor_sec='10785756' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' enable='1' name='IOC1' call='greenButtonInt' >
+							<settings timer='0' prescale='-1' postscale='-1' rollover='-1' bitcount='-1' trigger='3' ppsport='-1' ppspin='-1' maskhi='AAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' masklo='AAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' >
+								<option value='-1' />
+								<option value='-1' />
+								<option value='-1' />
+								<option value='-1' />
+								<option value='-1' />
+								<option value='-1' />
+								<option value='-1' />
+								<option value='-1' />
+							</settings>
+						</command>
+						<command class_type='loop' title='Loop' cmdcolor='4767473' cmdcolor_sec='11337727' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' type='0' exp='1' >
+							<flowline >
+								<command class_type='call' title='Component Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' component='RFID_MFRC522_V2' macro='IsNewCardPresent' >
+									<return exp='retval' />
+								</command>
+								<command class_type='decision' title='Decision' cmdcolor='4767473' cmdcolor_sec='11337727' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' exp='retval' swap='0' >
+									<flowline >
+										<command class_type='call' title='Component Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' component='RFID_MFRC522_V2' macro='ReadCardSerial' >
+											<return exp='retval' />
+										</command>
+										<command class_type='call' title='Component Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' component='RFID_MFRC522_V2' macro='ReadUIDByte' >
+											<argument exp='uid' />
+										</command>
+									</flowline>
+									<flowline />
+								</command>
+								<command class_type='call' title='Component Macro' cmdcolor='4487093' cmdcolor_sec='11066367' cmdcolor_txt='16777215' cmdgradient='4' cmdopacity='0.64' component='RFID_MFRC522_V2' macro='HaltA' />
+							</flowline>
+						</command>
+					</flowline>
+				</macro>
+			</macros>
+			<component class_type='ref' guid='44f82374-a417-40d5-bd42-23a177a390d2' vmin='0' vmaj='1' codename='LEDGreen' panelId='0' x='895.5' y='-99.7368' z='0' xsz='75.048' ysz='63.9732' zsz='25' xang='0' yang='0' zang='0' xquat='0' yquat='0' zquat='0' wquat='1' visible='1' scadavisible='1' interactive='1' solid='1' layer='2' poslock='0' comp2dType='0' >
+				<resources />
+				<properties />
+				<values >
+					<value target='Pin' data='$PORTH.5' />
+					<value target='Polarity' data='001' />
+					<value target='ComponentLabel' data='000' />
+					<value target='GdiText2::sText' data='LEDGreen' />
+					<value target='ComponentLabelPosition' data='000' />
+					<value target='ComponentLabelXPostion' data='0' />
+					<value target='ComponentLabelYPostion' data='0.833333' />
+					<value target='LabelColour' data='7895160' />
+					<value target='ShowConnectionLabel' data='1' />
+					<value target='ShowPinValue' data='0' />
+					<value target='PinLabelPosition' data='001' />
+					<value target='PinLabelXPostion' data='0' />
+					<value target='PinLabelYPostion' data='-1.041667' />
+					<value target='AppDevDetected' data='0' />
+					<value target='Shape' data='000' />
+					<value target='Colour' data='000' />
+					<value target='Style' data='001' />
+					<value target='AutoOffColour' data='1' />
+					<value target='OnColour' data='65280' />
+					<value target='OffColour' data='10752' />
+				</values>
+				<events />
+				<apis />
+				<variables />
+				<macros />
+			</component>
+			<component class_type='ref' guid='3f8d29a6-40a6-4d5e-a254-190c86d9ebb7' vmin='0' vmaj='3' codename='RFID_MFRC522_V2' panelId='0' x='492.542' y='-250' z='1' xsz='25.3975' ysz='25.3491' zsz='25' xang='0' yang='0' zang='0' xquat='0' yquat='0' zquat='0' wquat='1' visible='1' scadavisible='1' interactive='1' solid='1' layer='2' poslock='0' comp2dType='0' >
+				<resources />
+				<properties />
+				<values >
+					<value target='cal_spi::CHANNEL' data='001' />
+					<value target='cal_spi::PR_SCALE' data='004' />
+					<value target='cal_spi::MOSI' data='$PORTB.2' />
+					<value target='cal_spi::MOSIPins' data='008' />
+					<value target='cal_spi::MISO' data='$PORTB.3' />
+					<value target='cal_spi::MISOPins' data='013' />
+					<value target='cal_spi::CLK' data='$PORTB.1' />
+					<value target='cal_spi::CLKPins' data='004' />
+					<value target='cal_spi::SS' data='$PORTC.2' />
+					<value target='reset' data='$PORTC.1' />
+					<value target='label' data='MFRC522' />
+					<value target='cal_spi::ScopeTraces' data='1' />
+					<value target='cal_spi::ConsoleData' data='0' />
+					<value target='cal_spi::Injector' data='000' />
+					<value target='cal_spi1::InjectorCS' data='' />
+				</values>
+				<events />
+				<apis />
+				<variables />
+				<macros />
+			</component>
+			<component class_type='ref' guid='f8c9b53d-0bf2-469f-8f0a-34caa93749ba' vmin='1' vmaj='1' codename='lcd_16x2' panelId='0' x='945' y='-260' z='2' xsz='33.3091' ysz='32.8865' zsz='25' xang='0' yang='0' zang='0' xquat='0' yquat='0' zquat='0' wquat='1' visible='1' scadavisible='1' interactive='1' solid='1' layer='2' poslock='1' comp2dType='0' >
+				<resources />
+				<properties />
+				<values >
+					<value target='Pin_Data_0' data='$PORTB.0' />
+					<value target='Pin_Data_1' data='$PORTB.1' />
+					<value target='Pin_Data_2' data='$PORTB.2' />
+					<value target='Pin_Data_3' data='$PORTB.3' />
+					<value target='Pin_RS' data='$PORTB.4' />
+					<value target='Pin_E' data='$PORTB.5' />
+					<value target='LCD::ctrl_lcd::Base_GLCD1::ComponentLabel' data='000' />
+					<value target='LCD::ctrl_lcd::Base_GLCD1::GdiText1::sText' data='lcd_16x2' />
+					<value target='LCD::ctrl_lcd::Base_GLCD1::GdiText1::dScale' data='1.4' />
+					<value target='LCD::ctrl_lcd::TextColour' data='0' />
+					<value target='LCD::ctrl_lcd::TextBg' data='14803425' />
+					<value target='LCD::ctrl_lcd::DisplayBg' data='16777215' />
+				</values>
+				<events />
+				<apis />
+				<variables />
+				<macros />
+			</component>
+			<component class_type='ref' guid='04bbd3b8-ee11-40eb-91e8-1bbbd6f65b8c' vmin='0' vmaj='1' codename='Buzzer1' panelId='0' x='236.5' y='-106' z='3' xsz='25.3975' ysz='25' zsz='25' xang='0' yang='0' zang='0' xquat='0' yquat='0' zquat='0' wquat='1' visible='1' scadavisible='1' interactive='1' solid='1' layer='2' poslock='0' comp2dType='0' >
+				<resources />
+				<properties />
+				<values >
+					<value target='pin' data='$PORTA.0' />
+					<value target='Polarity' data='001' />
+					<value target='BuzzFreq' data='1200' />
+				</values>
+				<events />
+				<apis />
+				<variables />
+				<macros />
+			</component>
+			<component class_type='ref' guid='44f82374-a417-40d5-bd42-23a177a390d2' vmin='0' vmaj='1' codename='LEDRed' panelId='0' x='1035' y='-99.9999' z='4' xsz='74.3719' ysz='58.6007' zsz='25' xang='0' yang='0' zang='0' xquat='0' yquat='0' zquat='0' wquat='1' visible='1' scadavisible='1' interactive='1' solid='1' layer='2' poslock='0' comp2dType='0' >
+				<resources />
+				<properties />
+				<values >
+					<value target='Pin' data='$PORTC.0' />
+					<value target='Polarity' data='001' />
+					<value target='ComponentLabel' data='000' />
+					<value target='GdiText2::sText' data='LEDRed' />
+					<value target='ComponentLabelPosition' data='000' />
+					<value target='ComponentLabelXPostion' data='0' />
+					<value target='ComponentLabelYPostion' data='0.833333' />
+					<value target='LabelColour' data='7895160' />
+					<value target='ShowConnectionLabel' data='1' />
+					<value target='ShowPinValue' data='0' />
+					<value target='PinLabelPosition' data='001' />
+					<value target='PinLabelXPostion' data='0' />
+					<value target='PinLabelYPostion' data='-1.041667' />
+					<value target='AppDevDetected' data='0' />
+					<value target='Shape' data='000' />
+					<value target='Colour' data='001' />
+					<value target='Style' data='001' />
+					<value target='AutoOffColour' data='1' />
+					<value target='OnColour' data='255' />
+					<value target='OffColour' data='42' />
+				</values>
+				<events />
+				<apis />
+				<variables />
+				<macros />
+			</component>
+			<component class_type='ref' guid='e2698f3e-1168-4f25-9c50-24a74ea7e34a' vmin='0' vmaj='1' codename='GreenButton' panelId='0' x='845' y='-413.776' z='5' xsz='57.8945' ysz='91.0067' zsz='25' xang='0' yang='0' zang='0' xquat='0' yquat='0' zquat='0' wquat='1' visible='1' scadavisible='1' interactive='1' solid='1' layer='2' poslock='0' comp2dType='0' >
+				<resources />
+				<properties />
+				<values >
+					<value target='AppDevDetected' data='0' />
+					<value target='Pin' data='$PORTJ.6' />
+					<value target='Polarity' data='000' />
+					<value target='debounce' data='5' />
+					<value target='Latching' data='1' />
+					<value target='ComponentLabel' data='000' />
+					<value target='GdiText2::sText' data='Switch_Push_Button1' />
+					<value target='ComponentLabelPosition' data='000' />
+					<value target='ComponentLabelXPostion' data='0' />
+					<value target='ComponentLabelYPostion' data='0.800000' />
+					<value target='LabelColour' data='7895160' />
+					<value target='ShowConnectionLabel' data='1' />
+					<value target='ShowPinValue' data='0' />
+					<value target='PinLabelPosition' data='001' />
+					<value target='PinLabelXPostion' data='0' />
+					<value target='PinLabelYPostion' data='-1.000000' />
+					<value target='Style' data='000' />
+					<value target='GdiSwitch1::nType' data='  2' />
+					<value target='GdiSwitch1::sLabelOn' data='On' />
+					<value target='GdiSwitch1::sLabelOff' data='Off' />
+					<value target='FontType' data='Calibri' />
+					<value target='GdiSwitch1::dScale' data='0.65' />
+					<value target='GdiText2::dScale' data='0.65' />
+					<value target='GdiText1::dScale' data='0.65' />
+					<value target='GdiSwitch1::brOutline' data='71776119061217280' />
+					<value target='GdiSwitch1::brOuterFillOn' data='251262225375821824' />
+					<value target='GdiSwitch1::brFill' data='251262225375821824' />
+					<value target='GdiSwitch1::brOutlineThumb' data='71917408452870144' />
+					<value target='GdiSwitch1::brFillThumb' data='288090190566653952' />
+					<value target='GdiSwitch1::brFillOn' data='648292728253186048' />
+					<value target='GdiSwitch1::brLabelOn' data='0' />
+					<value target='GdiSwitch1::brFillOff' data='648237171995574272' />
+					<value target='GdiSwitch1::brLabelOff' data='0' />
+				</values>
+				<events />
+				<apis />
+				<variables />
+				<macros />
+			</component>
+			<component class_type='ref' guid='e2698f3e-1168-4f25-9c50-24a74ea7e34a' vmin='0' vmaj='1' codename='RedButton' panelId='0' x='1125' y='-409.23' z='6' xsz='57.8945' ysz='84.1122' zsz='25' xang='0' yang='0' zang='0' xquat='0' yquat='0' zquat='0' wquat='1' visible='1' scadavisible='1' interactive='1' solid='1' layer='2' poslock='0' comp2dType='0' >
+				<resources />
+				<properties />
+				<values >
+					<value target='AppDevDetected' data='0' />
+					<value target='Pin' data='$PORTB.5' />
+					<value target='Polarity' data='000' />
+					<value target='debounce' data='5' />
+					<value target='Latching' data='1' />
+					<value target='ComponentLabel' data='000' />
+					<value target='GdiText2::sText' data='Switch_Push_Button2' />
+					<value target='ComponentLabelPosition' data='000' />
+					<value target='ComponentLabelXPostion' data='0' />
+					<value target='ComponentLabelYPostion' data='0.800000' />
+					<value target='LabelColour' data='7895160' />
+					<value target='ShowConnectionLabel' data='1' />
+					<value target='ShowPinValue' data='0' />
+					<value target='PinLabelPosition' data='001' />
+					<value target='PinLabelXPostion' data='0' />
+					<value target='PinLabelYPostion' data='-1.000000' />
+					<value target='Style' data='000' />
+					<value target='GdiSwitch1::nType' data='  2' />
+					<value target='GdiSwitch1::sLabelOn' data='On' />
+					<value target='GdiSwitch1::sLabelOff' data='Off' />
+					<value target='FontType' data='Calibri' />
+					<value target='GdiSwitch1::dScale' data='0.65' />
+					<value target='GdiText2::dScale' data='0.65' />
+					<value target='GdiText1::dScale' data='0.65' />
+					<value target='GdiSwitch1::brOutline' data='71776119061217280' />
+					<value target='GdiSwitch1::brOuterFillOn' data='251262225375821824' />
+					<value target='GdiSwitch1::brFill' data='251262225375821824' />
+					<value target='GdiSwitch1::brOutlineThumb' data='71917408452870144' />
+					<value target='GdiSwitch1::brFillThumb' data='288090190566653952' />
+					<value target='GdiSwitch1::brFillOn' data='648292728253186048' />
+					<value target='GdiSwitch1::brLabelOn' data='0' />
+					<value target='GdiSwitch1::brFillOff' data='648237171995574272' />
+					<value target='GdiSwitch1::brLabelOff' data='0' />
+				</values>
+				<events />
+				<apis />
+				<variables />
+				<macros />
+			</component>
+		</component>
+	</components>
+	<scadaresourcelookup />
+	<keymap />
+	<panel2d shadows='0' lighting='2' brightness='0' >
+		<background rgb='7292207' img='' style='0' />
+		<camera xe='0' ye='0' ze='305.587' xt='0' yt='0' zt='0' xquat='0' yquat='0' zquat='0' wquat='1' />
+		<viewport dx='200' dy='564' zoom='79.1919' fix_topleft='0' />
+		<page x='1000' y='1000' show='0' rgb='7360576' />
+		<winpos ID='7005' RectRecentFloat='0,305,650,716' RectRecentDocked='0,0,200,587' RecentFrameAlignment='16384' RecentRowIndex='0' IsFloating='0' MRUWidth='32767' PinState='0' IsMaximized='0' IsVisible='0' />
+	</panel2d>
+	<panel3d shadows='0' lighting='2' brightness='0' perspective='1' >
+		<background rgb='8409120' img='' style='0' />
+		<table rgb='7360576' img='' style='0' size='0' />
+		<camera xe='0' ye='0' ze='781.66' xt='0' yt='0' zt='0' xquat='0' yquat='0' zquat='0' wquat='1' />
+		<camerakey0 xe='0' ye='0' ze='300' xt='0' yt='0' zt='0' xquat='0' yquat='0' zquat='0' wquat='1' />
+		<camerakey1 xe='-3.67394e-14' ye='0' ze='-300' xt='0' yt='0' zt='0' xquat='0' yquat='1' zquat='0' wquat='6.12323e-17' />
+		<camerakey2 xe='0' ye='-300' ze='6.66134e-14' xt='0' yt='0' zt='0' xquat='-0.707107' yquat='0' zquat='0' wquat='0.707107' />
+		<camerakey3 xe='-3.67394e-14' ye='300' ze='6.66134e-14' xt='0' yt='0' zt='0' xquat='-4.32978e-17' yquat='0.707107' zquat='0.707107' wquat='4.32978e-17' />
+		<camerakey4 xe='-300' ye='-6.66134e-14' ze='6.66134e-14' xt='0' yt='0' zt='0' xquat='-0.5' yquat='0.5' zquat='0.5' wquat='0.5' />
+		<camerakey5 xe='300' ye='-6.66134e-14' ze='6.66134e-14' xt='0' yt='0' zt='0' xquat='-0.5' yquat='-0.5' zquat='-0.5' wquat='0.5' />
+		<camerakey6 xe='-173.205' ye='-173.205' ze='173.205' xt='0' yt='0' zt='0' xquat='-0.424708' yquat='0.17592' zquat='0.339851' wquat='0.820473' />
+		<winpos ID='7004' RectRecentFloat='0,79,659,924' RectRecentDocked='0,0,326,767' RecentFrameAlignment='16384' RecentRowIndex='0' IsFloating='0' MRUWidth='32767' PinState='0' IsMaximized='0' IsVisible='0' />
+	</panel3d>
+	<panels2d count='1' >
+		<panel2d_0 id='0' name='2D Panel' >
+			<winpos ID='1171' RectRecentFloat='1995,36,3253,805' RectRecentDocked='970,141,1296,908' RecentFrameAlignment='16384' RecentRowIndex='0' IsFloating='1' MRUWidth='32767' PinState='0' IsMaximized='0' IsVisible='1' />
+			<background fill='288230376151053813' showgrid='1' gridstyle='1' gridsize='10' gridbrush='71776119075691740' snaptogrid='1' />
+		</panel2d_0>
+	</panels2d>
+	<layout >
+		<view type='0' name='Main' mode='0' placement='LAAAAAAAAAABAAAA---------------------wUAAAAYAAAAcwMAAD4CAAA' zoom='100' scrollx='0' scrolly='0' flags='0' />
+		<view type='0' name='redButtonInt' mode='0' placement='LAAAAAAAAAABAAAA---------------------wUAAAAYAAAAcwMAAD4CAAA' zoom='100' scrollx='0' scrolly='0' flags='0' />
+		<view type='0' name='greenButtonInt' mode='0' placement='LAAAAAAAAAABAAAA---------------------wUAAAAYAAAAcwMAAD4CAAA' zoom='100' scrollx='0' scrolly='0' flags='0' />
+		<view type='0' name='BlinkGreen' mode='0' placement='LAAAAAAAAAABAAAA---------------------wUAAAAYAAAAcwMAAD4CAAA' zoom='100' scrollx='0' scrolly='0' flags='0' />
+		<view type='0' name='BlinkRed' mode='0' placement='LAAAAAAAAAABAAAA---------------------wUAAAAYAAAAcwMAAD4CAAA' zoom='100' scrollx='0' scrolly='0' flags='0' />
+		<view type='0' name='getID' mode='0' placement='LAAAAAAAAAABAAAA---------------------wUAAAAYAAAAcwMAAD4CAAA' zoom='100' scrollx='0' scrolly='0' flags='0' />
+	</layout>
+</document>
+</root>
