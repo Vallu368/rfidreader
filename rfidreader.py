@@ -3,7 +3,7 @@ import MySQLdb
 import hashlib
 from datetime import datetime
 import time
-
+import threading
 
 def send_buzz_error(): #Red light twice & beeps from Arduino
     arduino.write(b"BUZZ_ERROR\n")
@@ -13,6 +13,7 @@ def send_buzz_green():
 
 def send_buzz_blue():
    arduino.write(b"BUZZ_BLUE\n")
+
 
 def WaitForButton(uid, arduino):
       
@@ -185,10 +186,14 @@ def check_in_or_out(uid: str, in_or_out: int):
    print(f"currently {amount} in class")
    cursor.close()
    
-      
-
-device = "/dev/ttyACM0" #port the arduino is plugged into
+def MidnightReset():
+   now = datetime.now()
+   formatted_date = now.strftime('%Y-%m-%d %H:%M')
+   print(formatted_date)
+def MainLoop():
+   print("Main thread starting")
 try:
+  device = "/dev/ttyACM0" #port the arduino is plugged into
   print(f"Connecting to...{device}")
   arduino = serial.Serial(device, 9600) #start connection to arduino
   print(f"Connected to {device}")
@@ -211,11 +216,11 @@ try:
         if button != 2:
            check_in_or_out(h.hexdigest(), button)
         button = 2
-
         
-
 except Exception as e: 
   print(f"Failed connection to {device}: ", e) 
 
+mainThread = threading.Thread(target=MidnightReset)
 
+mainThread.start()
 
