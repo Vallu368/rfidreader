@@ -12,7 +12,7 @@ The Arduino is setup with a LCD screen, to give instructions to the user (Read C
 This tool was made to make managing the database easier, and without needing to access the phpmyadmin site.<br>
 This tool can: <br>
 
-Show all tags/cards in the database, their ID, and associated name if they have one<br>
+- Show all tags/cards in the database, their ID, and associated name if they have one<br>
 
 - Add a new name to an existing tag in the database<br>
 
@@ -77,3 +77,20 @@ Out Button to Digital Pin 3<br>
 R to Digital Pin 10<br>
 B to Digital Pin 9<br>
 G to Digital Pin 8<br>
+
+# Usage
+## Reader
+
+Download and use the Arduino IDE to upload the included sketch onto your Arduino, if using different pin locations make sure to change them in the Arduino sketch <br>
+
+Set up your Database tables as shown earlier, if you change the names of anything, make sure you change them in BOTH rfidmanager.py and rfidreader.py <br>
+
+Setup the correct mysql connection parameters in both rfidmanager.py and rfidreader.py <br>
+
+Connect your Arduino with the sketch uploaded to the machine you want to run the scanner, and launch rfidreader.py <br>
+
+## Manager
+
+Launch the rfidmanager.py script either by using the console (python rfidmanager.py) or by using the executable included<br>
+
+If adding new tags to the database, you need an Arduino running the RFID Reader sketch attached to the computer running the rfidmanager.py, otherwise it is not necessary.<br>
