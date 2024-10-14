@@ -14,9 +14,9 @@ The SQL Database is set in a way where all the tags/cards that the reader accept
 "Action log" stores every action made by the rfidmanager<br>
 "Error log" logs possible errors from the manager and reader (Tag not in database, etc..)<br>
 
-# Arduino pins
-
-## 16x2 LCD Screen
+# Arduino
+The LCD Screen is set in a way where you can change the wanted contrast using the Arduino Sketch, instead of a potentiometer<br>
+## 16x2 LCD Screen Pins
 VSS to GND<br>
 VDD to 5V<br>
 V0 to Digital pin 4<br>
