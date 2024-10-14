@@ -95,3 +95,58 @@ Connect your Arduino with the sketch uploaded to the machine you want to run the
 Launch the rfidmanager.py script either by using the console (python rfidmanager.py) or by using the executable included<br>
 
 If adding new tags to the database, you need an Arduino running the RFID Reader sketch attached to the computer running the rfidmanager.py, otherwise it is not necessary.<br>
+
+# RFID-lukija
+Lukijan tarkoitus on seurata luokan liikennettä.<br>
+Tarvitset Arduinon, jossa on RC522 RFID-anturi ja 2 painiketta.<br>
+Kun ohjelma on käynnissä, se odottaa, että Arduino havaitsee kortin tai lätkän skannauksen.<br> 
+Skannauksen jälkeen ohjelma odottaa, että painiketta painetaan, jotta voidaan määrittää, oletko saapumassa vai lähtemässä. Jos painiketta ei paineta, ohjelma palaa odottamaan skannausta.<br> 
+Arduino on varustettu LCD-näytöllä, joka antaa käyttäjälle ohjeita (Lue kortti, Paina nappia, jne.) ja näyttää virhetilanteet (Kortti ei tietokannassa, yrität kirjautua sisään vaikka olet jo sisällä jne.).<br>
+
+# RFID-hallintatyökalu
+Tämä työkalu on tehty helpottamaan tietokannan hallintaa ilman, että tarvitsee käyttää phpMyAdmin-sivustoa.<br> 
+Työkalu voi: <br>
+- Näyttää kaikki tietokannan kortit/lätkät, niiden ID:n ja niihin liitetyt nimet, jos niitä on.<br>
+
+- Lisätä uuden nimen olemassa olevaan tietokannan korttiin/lätkään.<br>
+
+- Poistaa nimen olemassa olevasta tunnisteesta, johon on jo liitetty nimi.<br>
+
+- Lisätä uuden tunnisteen tai kortin tietokantaan.<br>
+
+- Lukea onnistuneet skannaukset.<br>
+
+- Lukea virhelokin.<br>
+
+- Lukea toimintalokin (kaikki RFID-hallintatyökalulla tehdyt toimet).<br>
+
+- Kirjata ulos kaikki, jotka ovat kirjautuneena lukijan kautta.<br>
+
+Tämä työkalu ei vaadi Arduinoa tai RC522 RFID-anturia mihinkään muuhun kuin uusien korttien tai tunnisteiden lisäämiseen tietokantaan.<br>
+
+Käyttääksesi työkalua, käynnistä se komentokehotteesta komennolla "python rfidmanager.py" tai käytä suoritettavaa tiedostoa.<br>
+
+# SQL-tietokanta
+SQL-tietokanta on luotu siten, että kaikki lukijan hyväksymät tunnisteet/kortit ovat taulukossa nimeltä "tags", kun taas kuhunkin lätkään liitetyt nimet ovat taulukossa nimeltä "nicknames".<br> 
+"Access log" tallentaa jokaisen onnistuneen sisään- ja uloskirjautumisen tiedot.<br> 
+"Action log" tallentaa jokaisen RFID-hallintatyökalulla tehdyn toimen.<br> 
+"Error log" kirjaa mahdolliset virheet lukijasta ja hallintatyökalusta (Lätkä ei löydy tietokannasta, jne.).<br>
+
+# Arduino
+Tämä projekti tehtiin käyttämällä Arduino Mega 2560 Rev3 / JOY-iT MEGA 2560 -alustaa ja seuraavia osia:<br> 
+1x RGB LED-valo<br> 
+2x Painike<br> 
+1x Arduino Piezo<br> 
+1x RFID-RFC522-moduuli<br> 
+1x 16x2 LCD-näyttö<br>
+
+## 16x2 LCD-näyttö
+LCD-näyttö on asetettu siten, että haluttu kontrasti voidaan muuttaa Arduino-sketchin avulla koodista, potentiometrin sijasta.<br>
+
+
+
+
+
+
+
+
