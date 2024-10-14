@@ -69,9 +69,10 @@ MOSI to Digital Pin 51<br>
 MISO to Digital Pin 50<br>
 RST to Digital Pin 49<br>
 
-## Button Pins
+## Other Pins
 In Button to Digital Pin 2<br>
 Out Button to Digital Pin 3<br>
+Piezo to Digital Pin 7
 
 ## RGB LED Pins
 R to Digital Pin 10<br>
