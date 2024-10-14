@@ -39,6 +39,7 @@ The SQL Database is set in a way where all the tags/cards that the reader accept
 "Error log" logs possible errors from the manager and reader (Tag not in database, etc..)<br>
 
 # Arduino
+![PCB](images/pcb.png)
 This project was made using an Arduino Mega 2560 Rev3 / JOY-iT MEGA 2560 and the following parts:<br>
 1x RGB LED light<br>
 2x Button<br>
