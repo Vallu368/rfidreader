@@ -1,8 +1,11 @@
 import serial
+import serial.tools.list_ports
 import MySQLdb
 import hashlib
 from datetime import datetime
 import time
+import threading
+import config
 
 
 def send_buzz_error(): #Red light twice & beeps from Arduino
@@ -15,12 +18,12 @@ def send_buzz_blue():
    arduino.write(b"BUZZ_BLUE\n")
 
 def WaitForButton(uid, arduino):
-      
+   print("Button...")
    now = datetime.now()
    formatted_date = now.strftime('%Y-%m-%d %H:%M')
    try:
       #Establish sql connection
-      dbConn = MySQLdb.connect("localhost","arduino","f212","rfid", unix_socket = "/opt/lampp/var/mysql/mysql.sock")
+      dbConn = MySQLdb.connect(config.ip, config.clicker,config.clickerPass,config.database)
    except Exception as e:
       print("Failed to connect to database: ", e)
       send_buzz_error()
@@ -30,7 +33,7 @@ def WaitForButton(uid, arduino):
    cursor = dbConn.cursor() #Open cursor to database
    dbConn.autocommit(True) #commits inserts automatically
    uid = uid.strip()
-   cursor.execute("SELECT id FROM latka WHERE rfid_uid = %s", (uid,))
+   cursor.execute("SELECT id FROM tags WHERE rfid_uid = %s", (uid,))
    result = cursor.fetchone()
 
    if result is None:
@@ -44,7 +47,7 @@ def WaitForButton(uid, arduino):
       return 2
    else:
       tag_id = result[0]
-      cursor.execute("SELECT nick FROM nicknames WHERE latka_id = %s", (tag_id,))
+      cursor.execute("SELECT nick FROM nicknames WHERE tag_id = %s", (tag_id,))
       nickresult = cursor.fetchone()
 
       if nickresult is None:
@@ -101,7 +104,7 @@ def check_in_or_out(uid: str, in_or_out: int):
    formatted_date = now.strftime('%Y-%m-%d %H:%M')
    try:
       #Establish sql connection
-      dbConn = MySQLdb.connect("localhost","arduino","f212","rfid", unix_socket = "/opt/lampp/var/mysql/mysql.sock")
+      dbConn = MySQLdb.connect(config.ip, config.clicker,config.clickerPass,config.database)
    except Exception as e:
       print("Failed to connect to database: ", e)
       send_buzz_error()
@@ -109,7 +112,7 @@ def check_in_or_out(uid: str, in_or_out: int):
    cursor = dbConn.cursor() #Open cursor to database
    dbConn.autocommit(True) #commits inserts automatically
    uid = uid.strip()
-   cursor.execute("SELECT id FROM latka WHERE rfid_uid = %s", (uid,))
+   cursor.execute("SELECT id FROM tags WHERE rfid_uid = %s", (uid,))
    result = cursor.fetchone()
    if result is None:
       return
@@ -117,7 +120,7 @@ def check_in_or_out(uid: str, in_or_out: int):
         
    tag_id = result[0]
    #print(f"TAG NUMBER IS {tag_id}")
-   cursor.execute("SELECT nick FROM nicknames WHERE latka_id = %s", (tag_id,))
+   cursor.execute("SELECT nick FROM nicknames WHERE tag_id = %s", (tag_id,))
    nickresult = cursor.fetchone()
 
    if nickresult is None:
@@ -126,7 +129,7 @@ def check_in_or_out(uid: str, in_or_out: int):
    print(f"Hello {nickresult[0]}")
 
    if in_or_out == 1: #GOING IN
-      cursor.execute(f"SELECT in_out FROM `rfid_data` WHERE uid = '{uid}' order by id DESC limit 1;")
+      cursor.execute(f"SELECT in_out FROM `access_log` WHERE uid = '{uid}' order by id DESC limit 1;")
       check = cursor.fetchone()
       if check is not None:
          if str(check[0]) == "1":
@@ -140,7 +143,7 @@ def check_in_or_out(uid: str, in_or_out: int):
             return
 
 
-      cursor.execute("INSERT INTO rfid_data (date, uid,in_out) VALUES (%s,%s,%s)", (formatted_date,uid,going_in))
+      cursor.execute("INSERT INTO access_log (date, uid,in_out) VALUES (%s,%s,%s)", (formatted_date,uid,going_in))
       print(f"{nickresult[0]} has gone in at {formatted_date}")
       send_buzz_green()
       arduino.write(b"WELCOME\n")
@@ -149,7 +152,7 @@ def check_in_or_out(uid: str, in_or_out: int):
 
    elif in_or_out == 0: #GOING OUT
     send_buzz_blue()
-    cursor.execute(f"SELECT in_out FROM `rfid_data` WHERE uid = '{uid}' order by id DESC limit 1;")
+    cursor.execute(f"SELECT in_out FROM `access_log` WHERE uid = '{uid}' order by id DESC limit 1;")
     check = cursor.fetchone()
     if check is not None:
        if str(check[0]) == "0":
@@ -161,10 +164,14 @@ def check_in_or_out(uid: str, in_or_out: int):
           time.sleep(3)
           arduino.write(b"KORTTI\n")
           return
-          
+    cursor.execute(f"SELECT date FROM `access_log` WHERE uid = '{uid}' order by id DESC limit 1;")
+    result = cursor.fetchone()
+    print(f"Date for coming in: {result[0]}")
     #insert data into database
-    cursor.execute("INSERT INTO rfid_data (date,uid,in_out) VALUES (%s,%s,%s)", (formatted_date,uid,going_out))
+    cursor.execute("INSERT INTO access_log (date,uid,in_out) VALUES (%s,%s,%s)", (formatted_date,uid,going_out))
     print(f"{nickresult[0]} has gone out at {formatted_date}")
+
+    
    else:
       print(f"Error checking in, no button pressed, current time: {formatted_date}")
       errorType = "No button pressed"
@@ -181,13 +188,44 @@ def check_in_or_out(uid: str, in_or_out: int):
       arduino.write(b"KORTTI\n")
       
 
-   amount = cursor.execute("SELECT uid FROM rfid_data t1 WHERE in_out = 1 AND (SELECT MAX(t2.id) FROM rfid_data t2 WHERE t2.uid = t1.uid) = t1.id;")
+   amount = cursor.execute("SELECT uid FROM access_log t1 WHERE in_out = 1 AND (SELECT MAX(t2.id) FROM access_log t2 WHERE t2.uid = t1.uid) = t1.id;")
    print(f"currently {amount} in class")
    cursor.close()
    
+def Reset():
+   hasResetToday = False
+   while True:
+      date = datetime.now()
+      formatted_date = date.strftime('%Y-%m-%d %H:%M')
+      now = datetime.now().hour
+      if now >= 19 and hasResetToday == False:
+         print("RESET")
+         hasResetToday = True
+         dbConn = MySQLdb.connect(config.ip, config.clicker,config.clickerPass,config.database)
+         cursor = dbConn.cursor() #Open cursor to database
+         cursor.execute("SELECT uid FROM access_log t1 WHERE in_out = 1 AND (SELECT MAX(t2.id) FROM access_log t2 WHERE t2.uid = t1.uid) = t1.id;")
+         result = cursor.fetchall()
+         am = 0
+         for i in result:
+            am += 1
+            i = i[0]
+            print(f"logging out {i}")
+            check_in_or_out(i, 0)
+         print(f"Reset complete, logged out {am} IDs")
+      if now == 6 and hasResetToday == True:
+         hasResetToday = False
+         print("hasResetToday = False")
       
 
-device = "/dev/ttyACM0" #port the arduino is plugged into
+t1 = threading.Thread(target=Reset)
+t1.start()
+
+device = ""
+ports = list(serial.tools.list_ports.comports())
+for p in ports:
+   if "Arduino" in p[1]:
+      print(f"Arduino detected in {p[0]}")
+      device = p[0]
 try:
   print(f"Connecting to...{device}")
   arduino = serial.Serial(device, 9600) #start connection to arduino

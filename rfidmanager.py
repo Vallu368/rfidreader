@@ -1,13 +1,15 @@
 import serial
+import serial.tools.list_ports
 import MySQLdb
 import maskpass
 import hashlib
 from datetime import datetime
+import config
 
 #simple program to access the sql database for the rfid so creating nicknames and such is easier
 def login():
-    user = input("Database User: ")
-    password = maskpass.askpass(mask="#")
+    user = config.manager
+    password = config.managerPass
     return user, password
 def getTime():
     now = datetime.now()
@@ -16,7 +18,7 @@ def getTime():
 login_information = login()
 try:
     #Establish sql connection
-    dbConn = MySQLdb.connect(host="172.16.1.48", port=3307, user=login_information[0], passwd=login_information[1], db="rfid")
+    dbConn = MySQLdb.connect(config.ip, user=login_information[0], passwd=login_information[1], db=config.database)
     print("Connected to database")
     cursor = dbConn.cursor() #Open cursor to database
     dbConn.autocommit(True) #Commits inserts automatically
@@ -44,13 +46,12 @@ try:
             print("exit - Close the program")
         
         elif com.lower() == "new": #Add a new tag/card into sql db
-            print("This function needs an RFID Reader running the right sketch")
-            print("The sketch is included in github.com/Vallu368/rfidreader")
-            print("Please connect an RFID reader")
-            print("Input the port the device is plugged into, leave blank for /dev/ttyUSB0")
-            device = input("")
-            if device == "":
-                device = "/dev/ttyUSB0"
+            device = ""
+            ports = list(serial.tools.list_ports.comports())
+            for p in ports:
+                if "Arduino" in p[1]:
+                    print(f"Arduino detected in {p[0]}")
+                    device = p[0]
             try:
                 print(f"Connecting to {device}...")
                 arduino = serial.Serial(device, 9600) #Start connection to arduino
@@ -62,33 +63,39 @@ try:
                     if str(uid_check) == "UID":
                         uid = str(data[6:])
                         uid = uid.strip()
-                        h = hashlib.new('sha256')
-                        h.update(str(uid).encode('utf-8'))
-                        cursor.execute("select id from latka where rfid_uid = %s", (h.hexdigest(),))
+                        h = hashlib.sha256()
+                        h.update(uid.encode('utf-8'))  # Convert UID to bytes and hash it
+                        hashed_uid = h.hexdigest()
+                        print(f"Hashed UID: {hashed_uid}")  # Print the hashed UID
+                        cursor.execute("select id from tags where rfid_uid = %s", (hashed_uid,))
                         check_if_exists = cursor.fetchone()
                         #print(check_if_exists)ar
                         if check_if_exists is not None:
                             print(f"Tag already exists with ID number of {check_if_exists[0]}")
+                            arduino.close()
                             break
                         else:
-                            cursor.execute("select max(id) from latka")
+                            cursor.execute("select max(id) from tags") ## if 0 shit breaks fix tomoro, add a 0 card to sql already or smthhing
                             max = cursor.fetchone()[0]
+                            if max == None:
+                                max = -1
                             max = int(max) + 1
-                            cursor.execute("INSERT INTO latka(id, rfid_uid) VALUES (%s,%s)", (max, h.hexdigest()))
+                            cursor.execute("INSERT INTO tags(id, rfid_uid) VALUES (%s,%s)", (max, h.hexdigest()))
                             print(f"Tag added to database ID: {max} UID: {h.hexdigest()}")
                             formatted_date = getTime()
-                            action = f"{login_information[0]} added new latka {max}"
+                            action = f"{login_information[0]} added new tag {max}"
                             cursor.execute("INSERT INTO action_log(date, action) VALUES (%s,%s)", (formatted_date, action))
                             print("Add a nickname? yes/no")
                             addnick = input("")
                             if addnick.lower() == "yes":
                                 print(f"Input nickname for {max}")
                                 nick_fromnewtag = input("")
-                                cursor.execute("INSERT INTO nicknames(latka_id, nick) VALUES (%s,%s)", (max, nick_fromnewtag))
+                                cursor.execute("INSERT INTO nicknames(tag_id, nick) VALUES (%s,%s)", (max, nick_fromnewtag))
                                 print(f"{max}'s nickname now is {nick_fromnewtag}")
-                                action =f"{login_information[0]} changed latka {max} nickname to {nick_fromnewtag}"
+                                action =f"{login_information[0]} changed tag {max} nickname to {nick_fromnewtag}"
                                 formatted_date = getTime()
                                 cursor.execute("INSERT INTO action_log(date, action) VALUES (%s,%s)", (formatted_date, action))
+                                arduino.close()
                                 break
                             else:
                                 break
@@ -101,7 +108,7 @@ try:
             print("continue? yes/no")
             cont = input("")
             if cont.lower() == "yes":
-                cursor.execute("SELECT uid FROM rfid_data t1 WHERE in_out = 1 AND (SELECT MAX(t2.id) FROM rfid_data t2 WHERE t2.uid = t1.uid) = t1.id;")
+                cursor.execute("SELECT uid FROM access_log t1 WHERE in_out = 1 AND (SELECT MAX(t2.id) FROM access_log t2 WHERE t2.uid = t1.uid) = t1.id;")
                 result = cursor.fetchall()
                 am = 0
                 for i in result:
@@ -109,7 +116,7 @@ try:
                     i = i[0]
                     print(f"Logging out {i}...")
                     formatted_date = getTime()
-                    cursor.execute("INSERT INTO rfid_data (date,uid,in_out) VALUES (%s,%s,%s)", (formatted_date,i,0))
+                    cursor.execute("INSERT INTO access_log (date,uid,in_out) VALUES (%s,%s,%s)", (formatted_date,i,0))
                 print(f"Reset complete, logged out {am} IDs")
                 formatted_date = getTime()
                 action = f"{login_information[0]} logged out {am} IDs"
@@ -157,9 +164,9 @@ try:
             action = f"{login_information[0]} opened error log"
             cursor.execute("INSERT INTO action_log(date, action) VALUES (%s,%s)", (formatted_date, action))
         elif com.lower() == "showall": #Show amount of tags in database and which ones have a set nickname
-            cursor.execute("SELECT MAX(id) from latka") #Get the amount of tags in database
+            cursor.execute("SELECT MAX(id) from tags") #Get the amount of tags in database
             max = cursor.fetchone()[0]
-            cursor.execute("SELECT * from nicknames ORDER BY latka_id DESC") #Get every nickname in database
+            cursor.execute("SELECT * from nicknames ORDER BY tag_id DESC") #Get every nickname in database
             nicks = cursor.fetchall()
             print(f"Amount of tags: {max}")            #Show amount of tags to user
             print(f"ID and associated nickname:")
@@ -176,19 +183,19 @@ try:
                 continue
             else:
                 newid = int(newid) #Turn user input string into an integer
-                cursor.execute("SELECT rfid_uid from latka where id = %s", (newid,)) #Execute SQL command to get the UID of the tag that has the user inputted ID number
+                cursor.execute("SELECT rfid_uid from tags where id = %s", (newid,)) #Execute SQL command to get the UID of the tag that has the user inputted ID number
                 idresult = cursor.fetchone() 
                 if idresult is None:    #Check if the number exists, ie if the user inputs number 16 and there's only 15 tags it will not go through
                     print("ID does not exist")
                 else:
-                    cursor.execute("SELECT nick from nicknames where latka_id = %s", (newid,)) #Checking if tag already has a nickname
+                    cursor.execute("SELECT nick from nicknames where tag_id = %s", (newid,)) #Checking if tag already has a nickname
                     nickresult = cursor.fetchone()
                     if nickresult is None: #If there isn't one already, the user gets to create a new one
                         newnick = input("Nickname: ")
-                        cursor.execute("INSERT INTO nicknames(latka_id, nick) VALUES (%s,%s)", (newid, newnick))
+                        cursor.execute("INSERT INTO nicknames(tag_id, nick) VALUES (%s,%s)", (newid, newnick))
                         print(f"{newid}'s nickname now is {newnick}")
                         formatted_date = getTime()
-                        action = f"{login_information[0]} changed latka {newid} nickname to {newnick}"
+                        action = f"{login_information[0]} changed tag {newid} nickname to {newnick}"
                         cursor.execute("INSERT INTO action_log(date, action) VALUES (%s,%s)", (formatted_date, action))
                     else:
                         print(f"Tag with the ID of {newid} already has a nickname: {nickresult[0]}. If you wish to assign it a new one, delete the old one first")
@@ -200,12 +207,12 @@ try:
                 continue
             else:
                 newid = int(newid)
-                cursor.execute("SELECT rfid_uid from latka where id = %s", (newid,)) #Checking if ID exists
+                cursor.execute("SELECT rfid_uid from tags where id = %s", (newid,)) #Checking if ID exists
                 idresult = cursor.fetchone()
                 if idresult is None:
                     print("ID does not exist")
                 else:
-                    cursor.execute("SELECT nick from nicknames where latka_id = %s", (newid,))
+                    cursor.execute("SELECT nick from nicknames where tag_id = %s", (newid,))
                     nickresult = cursor.fetchone() #Checking if tag already has a nick
                     if nickresult is None:
                         print(f"{newid} does not have a nickname assigned to it") 
@@ -214,10 +221,10 @@ try:
                         print("If you wish to delete the nickname, input YES")
                         yes = input("")
                         if yes == "YES":
-                            cursor.execute("DELETE from nicknames where latka_id = %s; ", (newid,))
+                            cursor.execute("DELETE from nicknames where tag_id = %s; ", (newid,))
                             print("Deletion successful")
                             formatted_date = getTime()
-                            action = f"{login_information[0]} removed latka {newid} nickname"
+                            action = f"{login_information[0]} removed tag {newid} nickname"
                             cursor.execute("INSERT INTO action_log(date, action) VALUES (%s,%s)", (formatted_date, action))
 except Exception as e:
     print("Failed to connect to database: ", e)

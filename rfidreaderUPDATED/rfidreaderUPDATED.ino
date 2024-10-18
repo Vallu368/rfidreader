@@ -1,12 +1,12 @@
-#include <MFRC522.h>  // MFRC522 RFID module library.
+ #include <MFRC522.h>  // MFRC522 RFID module library.
 #include <SPI.h>      // SPI device communication library.
 #include <LiquidCrystal.h>  // Library for LCD Screen
+#include "pitches.h"
 
+#define RST_PIN 28     // Defines pins for RST, SS connections respectively.
+#define SS_PIN 46 
 
-#define RST_PIN 49     // Defines pins for RST, SS connections respectively.
-#define SS_PIN 53 
-
-#define BUZZER_PIN 4   // Defines buzzer pin
+#define BUZZER_PIN 7   // Defines buzzer pin
 
 #define RED_LED_PIN 10// Define RGB LED pins
 #define GREEN_LED_PIN 8
@@ -15,13 +15,19 @@
 #define GREEN_BUTTON_PIN 2
 #define RED_BUTTON_PIN 3
 
-#define LCD_BACKLIGHT_PIN 7 //Control backlight for powersaving
-int Contrast=110; //Contrast set through arduino
+#define LCD_BACKLIGHT_PIN 37 //Control backlight for powersaving, connect anode to this pin
 
-LiquidCrystal lcd(12, 11, 25, 24, 23, 22); //pins for LCD data
+#define LCD_CONTRAST_PIN 4 //V0 pin
+int Contrast = 110; //Contrast set through arduino
+
+LiquidCrystal lcd(25, 27, 29, 31, 33, 35); //pins for LCD data
 
 int lcdCardCheck = 10;
 unsigned long lastScanTime = 0;
+
+int startMelody[] = {
+  NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
+};
 
 byte readCard[4];     // Array that will hold UID of the RFID card.
 bool successRead;
@@ -43,11 +49,12 @@ void setup() {
   mfrc522.PCD_Init(); // Initiates MFRC522 RFID module.
   mfrc522.PCD_DumpVersionToSerial(); // Show details of RFID Reader, if version errors it isn't set up properly
   Serial.println("Please scan your RFID tag or card.");
-  digitalWrite(7, HIGH); //Backlight on
-  analogWrite(6,Contrast);
+  digitalWrite(LCD_BACKLIGHT_PIN, HIGH); //Backlight on
+  analogWrite(LCD_CONTRAST_PIN,Contrast);
   lcd.begin(16, 2);
   lcd.setCursor(0,0);
   lcd.print("Lue kortti ");
+
   
 
   // Attach interrupts to the buttons
@@ -166,23 +173,14 @@ bool getID() {
     return false;
   }
   lastScanTime = millis(); // Update the last scan time
-
-  if (lastButtonPressed == 1) { //MADE REDUNDANT should be cleaned away
-    Serial.print("1UID: ");
-    BuzzBlue();
-  } else if (lastButtonPressed == 0) {
-    Serial.print("0UID: ");
-    BuzzBlue();
-  } else {
-    Serial.print("2UID: ");
-    BuzzBlue();
-  }
-  digitalWrite(7, HIGH);
+  Serial.print("0UID: " );
+  digitalWrite(LCD_BACKLIGHT_PIN, HIGH);
   String UID = "";
   for (byte i = 0; i < mfrc522.uid.size; i++) {
     readCard[i] = mfrc522.uid.uidByte[i]; // Reads RFID card's UID
     UID += String(readCard[i], HEX); // Save UID as string for database
   }
+  BuzzBlue();
   Serial.println(UID);
   mfrc522.PICC_HaltA(); // Halt the PICC
 
