@@ -264,6 +264,7 @@ t1 = threading.Thread(target=Reset)
 t2 = threading.Thread(target=StatusCheck)
 t1.start()
 t2.start()
+Main()
 
 
 
